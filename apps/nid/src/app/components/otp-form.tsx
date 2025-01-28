@@ -111,12 +111,9 @@ export function InputOTPForm({ nidNumber }: InputOTPFormProps) {
               Submit
             </Button>
             <DialogClose>
-              <Button
-                variant="outline"
-                className="w-full hover:bg-bangladesh-red hover:text-white"
-              >
+              <div className="h-9 px-4 py-2 border border-input bg-background shadow-sm w-full hover:bg-bangladesh-red hover:text-white inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0">
                 Cancel
-              </Button>
+              </div>
             </DialogClose>
           </div>
         </form>
