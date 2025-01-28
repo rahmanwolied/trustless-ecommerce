@@ -1,0 +1,22 @@
+model Nid {
+    id String @id @default(cuid())
+
+    nidNumber String @unique @default(dbgenerated("floor(random() * 9000000000 + 1000000000)::text")) @db.Char(10)
+
+    firstName String
+    lastName String
+    dateOfBirth DateTime
+    gender String
+    address String
+    phoneNumber String @db.Char(11) @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    otp String? @db.Char(6)
+    otpExpiry DateTime?
+    otpSentAt DateTime?
+    otpVerifiedAt DateTime?
+    otpVerifiedCount Int @default(0)
+
+    @@index([nidNumber])
+}

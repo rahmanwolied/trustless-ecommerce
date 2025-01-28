@@ -5,7 +5,11 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:push": "pnpm run --filter=@repo/db db:push",
+    "db:generate": "pnpm run --filter=@repo/db db:generate",
+    "db:studio": "pnpm run --filter=@repo/db db:studio",
+    "db:seed": "pnpm run --filter=@repo/db db:seed"
   },
   "devDependencies": {
     "prettier": "^3.4.2",
