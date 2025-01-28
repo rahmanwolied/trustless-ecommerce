@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { CheckCircle, X } from "lucide-react";
 import { useState } from "react";
 import { VerifyOTPDialog } from "./verify-otp-dialog";
+import { showToast } from "@/lib/toast";
 
 const formSchema = z.object({
   phoneNumber: z.string().min(11, {
@@ -42,21 +43,10 @@ export function NIDForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await sendOTP(values.phoneNumber, values.nidNumber);
     if (response.success) {
-      toast.success(response.message, {
-        richColors: true,
-        style: {
-          background: "rgb(0 106 78 / var(--tw-text-opacity, 1))",
-        },
-        duration: 10000,
-        icon: <CheckCircle className="w-4 h-4" />,
-      });
+      showToast.success(response.message);
       setOpen(true);
     } else {
-      toast.error(response.message, {
-        richColors: true,
-        duration: 10000,
-        icon: <X className="w-4 h-4" />,
-      });
+      showToast.error(response.message);
     }
   }
 

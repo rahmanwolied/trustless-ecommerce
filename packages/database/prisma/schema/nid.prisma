@@ -9,6 +9,7 @@ model Nid {
     gender String
     address String
     phoneNumber String @db.Char(11) @unique
+    
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

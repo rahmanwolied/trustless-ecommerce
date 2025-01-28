@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,7 +11,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -22,8 +20,11 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { DialogClose } from "@/components/ui/dialog";
 import { verifyOTP } from "@/server/otp";
+import { showToast } from "@/lib/toast";
+import { sendNidOffer } from "@repo/ssi";
+import { useConnectionIdAtom } from "@/lib/atoms/connection-id-atom";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -36,6 +37,8 @@ interface InputOTPFormProps {
 }
 
 export function InputOTPForm({ nidNumber }: InputOTPFormProps) {
+  const [connectionId] = useConnectionIdAtom();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,10 +48,18 @@ export function InputOTPForm({ nidNumber }: InputOTPFormProps) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const result = await verifyOTP(nidNumber, data.pin);
+
     if (result.success) {
-      toast.success(result.message);
+      showToast.success(result.message);
+      if (connectionId)
+        showToast.promise(
+          "Sending NID offer...",
+          "NID offer sent successfully",
+          "Failed to send NID offer",
+          sendNidOffer({ ...result.data, connectionId })
+        );
     } else {
-      toast.error(result.message);
+      showToast.error(result.message);
     }
   }
 
