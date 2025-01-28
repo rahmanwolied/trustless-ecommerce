@@ -39,8 +39,11 @@ export const SELLER_LICENSE_SCHEMA = {
     "tin",
     "phone_number",
     "type",
+    "seller_nid_number",
+    "seller_first_name",
+    "seller_last_name",
   ],
-  version: "2.0",
+  version: "2.1",
   tag: "Seller License",
 } as const;
 

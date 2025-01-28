@@ -10,6 +10,13 @@ import { Loader } from "lucide-react";
 import { useConnectionIdAtom } from "@/lib/atoms/connection-id-atom";
 import { useProgress } from "@/lib/atoms/progress-atom";
 
+const CREATE_CONNECTION_PROPS = {
+  alias: "Seller License Issuer",
+  goal: "To issue a Valid Seller License credential",
+  goal_code: "issue-seller-license",
+  my_label: "Seller License Issuer",
+};
+
 const QR_CODE_SIZE = 250;
 const QR_CODE_URL = `https://api.qrserver.com/v1/create-qr-code/?size=${QR_CODE_SIZE}x${QR_CODE_SIZE}&data=`;
 
@@ -26,9 +33,8 @@ export function QRCode({ setStep }: { setStep: (step: number) => void }) {
   const regenerateQR = async () => {
     try {
       setConnectionId(null);
-      const response = await createConnection();
+      const response = await createConnection(CREATE_CONNECTION_PROPS);
       if (response.success) {
-        console.log("response", response.data);
         setQrCode(QR_CODE_URL + response.data.invitation_url);
         setIsLoading(true);
 

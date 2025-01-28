@@ -87,7 +87,7 @@ export const Progress = () => {
                   <>
                     {stepIdx !== steps.length - 1 ? (
                       <div
-                        className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-red-500"
+                        className="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-green-500/30"
                         aria-hidden="true"
                       />
                     ) : null}
@@ -151,7 +151,7 @@ export const Progress = () => {
                     <div className="group relative flex items-start">
                       <span className="flex h-9 items-center">
                         <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 transition-colors group-hover:bg-red-600">
-                          <X className="size-4 fill-white" aria-hidden="true" />
+                          <X className="size-4 text-white" aria-hidden="true" />
                         </span>
                       </span>
                       <span className="ml-4 flex min-w-0 flex-col">

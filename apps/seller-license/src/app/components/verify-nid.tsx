@@ -37,21 +37,26 @@ export function VerifyNID({ setStep }: { setStep: (step: number) => void }) {
         setProgress(["complete", "failed", "upcoming", "upcoming"]);
         return;
       }
+      console.log("verified", verified);
       setFormData({
         nidNumber:
-          verified.by_format?.pres?.indy?.requested_proof.revealed_attrs.nid
-            .raw || "",
+          verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+            "nid_number"
+          ].raw || "",
         firstName:
-          verified.by_format?.pres?.indy?.requested_proof.revealed_attrs
-            .first_name.raw || "",
+          verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+            "first_name"
+          ].raw || "",
         lastName:
-          verified.by_format?.pres?.indy?.requested_proof.revealed_attrs
-            .last_name.raw || "",
+          verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+            "last_name"
+          ].raw || "",
       });
       setProgress(["complete", "complete", "current", "upcoming"]);
       setState("Verification successful");
       setStep(2);
     } catch (error) {
+      console.log("error", error);
       showToast.error("Error requesting NID proof");
     } finally {
       setIsLoading(false);

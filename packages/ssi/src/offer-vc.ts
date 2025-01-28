@@ -2,7 +2,10 @@
 
 import axios from "axios";
 import { ACAPY_API_URL } from "./config";
-import { nidCredentialInfo } from "./constants/credential-definitions";
+import {
+  nidCredentialInfo,
+  sellerLicenseCredentialInfo,
+} from "./constants/credential-definitions";
 
 interface SendNidOfferProps {
   connectionId: string;
@@ -13,6 +16,18 @@ interface SendNidOfferProps {
   address: string;
   phone_number: string;
   nid_number: string;
+}
+
+interface SendSellerLicenseOfferProps {
+  connectionId: string;
+  company_name: string;
+  company_address: string;
+  tin: string;
+  phone_number: string;
+  type: string;
+  seller_nid_number: string;
+  seller_first_name: string;
+  seller_last_name: string;
 }
 
 export async function sendNidOffer(obj: SendNidOfferProps) {
@@ -48,6 +63,52 @@ export async function sendNidOffer(obj: SendNidOfferProps) {
     if (response.status !== 200) {
       console.error(
         "Failed to send credential proposal",
+        response.data.message
+      );
+      return { data: null, success: false, message: response.data.message };
+    }
+    return { data: response.data, success: true };
+  } catch (error: any) {
+    console.error(error.response);
+    return { data: null, success: false, message: error.response.data.message };
+  }
+}
+
+export async function sendSellerLicenseOffer(obj: SendSellerLicenseOfferProps) {
+  const { connectionId } = obj;
+  const defId = sellerLicenseCredentialInfo.credentialDefinitionId;
+  try {
+    // 1. First create a credential proposal
+    const response = await axios.post(
+      `${ACAPY_API_URL}/issue-credential-2.0/send`,
+      {
+        connection_id: connectionId,
+        auto_remove: false,
+        auto_issue: true,
+        comment: "Seller License Credential Offer",
+        trace: false,
+        cred_def_id: defId,
+        credential_preview: {
+          "@type": "issue-credential/2.0/credential-preview",
+          attributes: sellerLicenseCredentialInfo.schema.attributes.map(
+            (attr) => ({
+              name: attr,
+              value: obj[attr],
+            })
+          ),
+        },
+
+        filter: {
+          indy: {
+            cred_def_id: defId,
+          },
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      console.error(
+        "Failed to send seller license credential proposal",
         response.data.message
       );
       return { data: null, success: false, message: response.data.message };
