@@ -9,8 +9,9 @@ model Nid {
   gender      String
   address     String
   phoneNumber String   @unique @db.Char(11)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   otp              String?   @db.Char(6)
   otpExpiry        DateTime?
