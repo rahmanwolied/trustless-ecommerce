@@ -1,5 +1,4 @@
 "use server";
-
 import axios from "axios";
 import {
   ACAPY_API_URL,
@@ -91,11 +90,37 @@ async function createSchemaAndCredDef() {
       );
       credentialDefinitionIds.push(credentialDefinition);
     }
-
-    return {
+    const jsonOutput = {
       schemaIds,
       credentialDefinitionIds,
     };
+
+    const nidString = `export const nidCredentialInfo = {
+    schema: NID_SCHEMA,
+    schemaId: "${schemaIds[0]}",
+    seqNo: 2668238,
+    credentialDefinitionId: "${credentialDefinitionIds[0]}",
+  };`;
+
+    const sellerLicenseString = `export const sellerLicenseCredentialInfo = {
+    schema: SELLER_LICENSE_SCHEMA,
+    schemaId: "${schemaIds[1]}",
+    seqNo: 2668240,
+    credentialDefinitionId: "${credentialDefinitionIds[1]}",
+  };`;
+
+    const receiptString = `export const receiptCredentialInfo = {
+    schema: RECEIPT_SCHEMA,
+    schemaId: "${schemaIds[2]}",
+    seqNo: 2668161,
+    credentialDefinitionId: "${credentialDefinitionIds[2]}",
+  };`;
+
+    const output = `${nidString}\n${sellerLicenseString}\n${receiptString}`;
+
+    console.log(output);
+
+    return jsonOutput;
   } catch (error) {
     console.error("Error creating schema and credential definition:", error);
     return {

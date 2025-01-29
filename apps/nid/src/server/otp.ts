@@ -28,14 +28,14 @@ export async function sendOTP(phoneNumber: string, nidNumber: string) {
   // const otp = "123456";
 
   const message = `Your OTP is ${otp}. Please enter it to verify your phone number.`;
-
-  const response = await sendSMS(phoneNumber, message);
-  if (!response.success)
-    return {
-      data: null,
-      success: false,
-      message: "Failed to send OTP",
-    };
+  console.log(message);
+  // const response = await sendSMS(phoneNumber, message);
+  // if (!response.success)
+  //   return {
+  //     data: null,
+  //     success: false,
+  //     message: "Failed to send OTP",
+  //   };
 
   await prisma.nid.update({
     where: { nidNumber },
