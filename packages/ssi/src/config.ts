@@ -1,4 +1,4 @@
-export const ACAPY_API_URL = "http://172.17.0.1:8021";
+export const ACAPY_API_URL = "https://c6ca-103-7-250-56.ngrok-free.app";
 
 export const DEFAULT_INVITATION_BODY = {
   accept: ["didcomm/aip1", "didcomm/aip2;env=rfc19"],

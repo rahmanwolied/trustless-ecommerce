@@ -24,18 +24,18 @@ export async function sendOTP(phoneNumber: string, nidNumber: string) {
       message: "Phone number does not match",
     };
 
-  // const otp = generateOTP();
-  const otp = "123456";
+  const otp = generateOTP();
+  // const otp = "123456";
 
   const message = `Your OTP is ${otp}. Please enter it to verify your phone number.`;
 
-  // const response = await sendSMS(phoneNumber, message);
-  // if (!response.success)
-  //   return {
-  //     data: null,
-  //     success: false,
-  //     message: "Failed to send OTP",
-  //   };
+  const response = await sendSMS(phoneNumber, message);
+  if (!response.success)
+    return {
+      data: null,
+      success: false,
+      message: "Failed to send OTP",
+    };
 
   await prisma.nid.update({
     where: { nidNumber },
