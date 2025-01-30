@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,9 +9,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
+import { verifyToken } from "@/server/verify-token";
+import Logout from "./Logout";
 
-export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export default async function Navbar() {
+  const isLoggedIn = await verifyToken();
 
   return (
     <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b border-border/40">
@@ -32,19 +31,23 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <Link
-              href="/registration"
-              className="text-foreground/60 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Registration
-            </Link>
+
             {!isLoggedIn && (
-              <Link
-                href="/login"
-                className="text-foreground/60 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Login
-              </Link>
+              <>
+                <Link
+                  href="/registration"
+                  className="text-foreground/60 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Registration
+                </Link>
+
+                <Link
+                  href="/login"
+                  className="text-foreground/60 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Login
+                </Link>
+              </>
             )}
             {isLoggedIn && (
               <DropdownMenu>
@@ -55,14 +58,20 @@ export default function Navbar() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel>{`${isLoggedIn?.name} (${isLoggedIn?.type})`}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Orders</DropdownMenuItem>
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/${isLoggedIn?.name}/profile`}>Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/orders">Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/cart">Cart</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>
-                    Log out
+                  <DropdownMenuItem>
+                    <Logout />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

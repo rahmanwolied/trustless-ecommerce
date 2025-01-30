@@ -16,7 +16,7 @@ export const sellerLicenseCredentialInfo = {
 
 export const receiptCredentialInfo = {
   schema: RECEIPT_SCHEMA,
-  schemaId: "6prRHY1ArSMwNW1J31Fb2g:2:Receipt:2.0",
-  seqNo: 2669976,
-  credentialDefinitionId: "6prRHY1ArSMwNW1J31Fb2g:3:CL:2669976:Receipt",
+  schemaId: "BqGWT4dPwcWWwbsrrBFDwX:2:Receipt:2.1",
+  seqNo: 2670988,
+  credentialDefinitionId: "BqGWT4dPwcWWwbsrrBFDwX:3:CL:2670988:Receipt",
 };

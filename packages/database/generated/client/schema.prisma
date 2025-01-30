@@ -22,6 +22,41 @@ model Nid {
   @@index([nidNumber])
 }
 
+model Product {
+  id String @id @default(cuid())
+
+  name      String
+  price     Float
+  rating    Float
+  purchases Int
+  image     String
+
+  sellerId String
+  seller   Seller @relation(fields: [sellerId], references: [id])
+}
+
+model Purchase {
+  id String @id @default(cuid())
+
+  buyerFirstName String
+  amount         Float
+  tTime          DateTime @default(now())
+  star           Int
+  status         Status   @default(COMPLETED)
+  picture        String
+  video          String
+  review         String
+
+  sellerId String
+  seller   Seller @relation(fields: [sellerId], references: [id])
+}
+
+enum Status {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -38,4 +73,20 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+}
+
+model Seller {
+  id String @id @default(cuid())
+
+  trustFactor Float
+
+  name    String @unique
+  address String
+  phone   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchases Purchase[]
+  products  Product[]
 }

@@ -1,0 +1,12 @@
+model Product {
+    id String @id @default(cuid())
+
+    name String
+    price Float
+    rating Float
+    purchases Int
+    image String
+
+    sellerId String
+    seller Seller @relation(fields: [sellerId], references: [id])
+}

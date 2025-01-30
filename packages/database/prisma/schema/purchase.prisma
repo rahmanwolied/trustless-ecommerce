@@ -1,0 +1,21 @@
+model Purchase {
+    id String @id @default(cuid())
+
+    buyerFirstName String
+    amount Float
+    tTime DateTime @default(now())
+    star Int
+    status Status @default(COMPLETED)
+    picture String
+    video String
+    review String
+
+    sellerId String
+    seller Seller @relation(fields: [sellerId], references: [id])
+}
+
+enum Status {
+    PENDING
+    COMPLETED
+    CANCELLED
+}

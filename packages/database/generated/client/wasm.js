@@ -135,6 +135,39 @@ exports.Prisma.NidScalarFieldEnum = {
   otpVerifiedCount: 'otpVerifiedCount'
 };
 
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price',
+  rating: 'rating',
+  purchases: 'purchases',
+  image: 'image',
+  sellerId: 'sellerId'
+};
+
+exports.Prisma.PurchaseScalarFieldEnum = {
+  id: 'id',
+  buyerFirstName: 'buyerFirstName',
+  amount: 'amount',
+  tTime: 'tTime',
+  star: 'star',
+  status: 'status',
+  picture: 'picture',
+  video: 'video',
+  review: 'review',
+  sellerId: 'sellerId'
+};
+
+exports.Prisma.SellerScalarFieldEnum = {
+  id: 'id',
+  trustFactor: 'trustFactor',
+  name: 'name',
+  address: 'address',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -149,10 +182,17 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.Status = exports.$Enums.Status = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
 
 exports.Prisma.ModelName = {
-  Nid: 'Nid'
+  Nid: 'Nid',
+  Product: 'Product',
+  Purchase: 'Purchase',
+  Seller: 'Seller'
 };
 
 /**

@@ -26,8 +26,8 @@ export const NID_SCHEMA = {
 
 export const RECEIPT_SCHEMA = {
   name: "Receipt",
-  attributes: ["product_id", "quantity", "price", "total_price", "date"],
-  version: "2.0",
+  attributes: ["receipt_number", "receipt_date", "receipt_amount"],
+  version: "2.1",
   tag: "Receipt",
 } as const;
 

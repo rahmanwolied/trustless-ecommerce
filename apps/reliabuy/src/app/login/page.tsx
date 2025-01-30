@@ -11,17 +11,92 @@ import { Button } from "../../components/ui/button";
 import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
 import { Label } from "../../components/ui/label";
 import Link from "next/link";
-import { requestNidProof, requestSellerProof } from "@repo/ssi";
+import { pollForProof, requestNidProof, requestSellerProof } from "@repo/ssi";
+import { QRCode } from "../components/qr-code";
+import { useConnectionIdAtom } from "@/lib/atoms/connection-id-atom";
+import { showToast } from "@/lib/toast";
+import { Loader } from "lucide-react";
+import { login } from "./login";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const [connectionId] = useConnectionIdAtom();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [state, setState] = useState("Send Verification Request");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleContinue = async () => {
-    if (selectedOption === "seller") {
-      await requestSellerProof();
-    } else {
-      await requestNidProof();
+    if (!connectionId) {
+      showToast.error("No connection ID found");
+      return;
     }
+
+    if (selectedOption === "seller") {
+      setLoading(true);
+      setState("Sending Seller License Verification Request...");
+      const { data, success, message } = await requestSellerProof(connectionId);
+
+      if (!success) {
+        showToast.error(message);
+        setLoading(false);
+        return;
+      }
+
+      setState("Waiting for verification...");
+      const verified = await pollForProof(data.pres_ex_id);
+
+      if (!verified) {
+        showToast.error("Error verifying Seller License");
+        setLoading(false);
+        return;
+      }
+
+      await login(
+        "seller",
+        true,
+        verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+          "company_name"
+        ].raw || "",
+        verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+          "company_address"
+        ].raw || "",
+        verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+          "phone_number"
+        ].raw || ""
+      );
+    } else {
+      setLoading(true);
+      setState("Sending NID Verification Request...");
+      const { data, success, message } = await requestNidProof(connectionId);
+
+      if (!success) {
+        showToast.error(message);
+        setLoading(false);
+        return;
+      }
+
+      setState("Waiting for verification...");
+      const verified = await pollForProof(data.pres_ex_id);
+      if (!verified) {
+        showToast.error("Error verifying NID");
+        setLoading(false);
+        return;
+      }
+
+      await login(
+        "buyer",
+        true,
+        verified.by_format?.pres?.indy?.requested_proof.revealed_attrs[
+          "first_name"
+        ].raw || "",
+        "",
+        ""
+      );
+    }
+    setState("Verification successful. Logging in...");
+    setLoading(false);
+    router.push("/");
   };
 
   return (
@@ -33,6 +108,7 @@ export default function LoginPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <QRCode />
           <RadioGroup
             onValueChange={setSelectedOption}
             className="flex flex-col space-y-4"
@@ -57,7 +133,14 @@ export default function LoginPage() {
             disabled={!selectedOption}
             onClick={handleContinue}
           >
-            Continue
+            {loading ? (
+              <>
+                <Loader className="w-4 h-4 animate-spin" />
+                <span>{state}</span>
+              </>
+            ) : (
+              <span>{state}</span>
+            )}
           </Button>
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}

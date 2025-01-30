@@ -77,6 +77,10 @@ export const pollForProof = async (
 
         console.log("Proof state:", state);
 
+        if (state === "abandoned") {
+          throw new Error("Proof verification failed");
+        }
+
         if (state === "presentation-received") {
           const verifyResponse = await axios.post(
             `${ACAPY_API_URL}/present-proof-2.0/records/${presentationExchangeId}/verify-presentation`

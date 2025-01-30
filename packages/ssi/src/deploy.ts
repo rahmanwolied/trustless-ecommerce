@@ -7,7 +7,7 @@ import {
   SELLER_LICENSE_SCHEMA,
 } from "./config";
 
-const schemas = [NID_SCHEMA, SELLER_LICENSE_SCHEMA, RECEIPT_SCHEMA];
+const schemas = [RECEIPT_SCHEMA];
 
 async function createSchema(
   schemaData:
