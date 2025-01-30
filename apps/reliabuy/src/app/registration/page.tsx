@@ -51,9 +51,9 @@ export default function RegistrationPage() {
                 selectedOption === "seller" &&
                 typeof window !== "undefined"
               ) {
-                window.open("http://localhost:3001", "_blank");
+                window.open("http://localhost:3000", "_blank");
               } else {
-                window.open("http://localhost:3002", "_blank");
+                window.open("http://localhost:3001", "_blank");
               }
             }}
           >

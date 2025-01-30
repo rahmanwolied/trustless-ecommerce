@@ -2,16 +2,15 @@ import { NID_SCHEMA, RECEIPT_SCHEMA, SELLER_LICENSE_SCHEMA } from "../config";
 
 export const nidCredentialInfo = {
   schema: NID_SCHEMA,
-  schemaId: "6prRHY1ArSMwNW1J31Fb2g:2:NID:2.0",
-  seqNo: 2669972,
-  credentialDefinitionId: "6prRHY1ArSMwNW1J31Fb2g:3:CL:2669972:NID",
+  schemaId: "BqGWT4dPwcWWwbsrrBFDwX:2:NID:2.0",
+  seqNo: 2671010,
+  credentialDefinitionId: "BqGWT4dPwcWWwbsrrBFDwX:3:CL:2671010:NID",
 };
-
 export const sellerLicenseCredentialInfo = {
   schema: SELLER_LICENSE_SCHEMA,
-  schemaId: "6prRHY1ArSMwNW1J31Fb2g:2:Seller License:2.1",
-  seqNo: 2669974,
-  credentialDefinitionId: "6prRHY1ArSMwNW1J31Fb2g:3:CL:2669974:Seller License",
+  schemaId: "BqGWT4dPwcWWwbsrrBFDwX:2:Seller License:2.1",
+  seqNo: 2671012,
+  credentialDefinitionId: "BqGWT4dPwcWWwbsrrBFDwX:3:CL:2671012:Seller License",
 };
 
 export const receiptCredentialInfo = {

@@ -15,8 +15,8 @@ export function AddToCartBtn({
 }) {
   return (
     <DialogClose
-      className="mt-4 w-1/2 bg-blue-500 text-white rounded-md p-2 flex justify-center items-center mx-auto"
-      disabled={type === "seller"}
+      className="mt-4 w-1/2 bg-blue-500 text-white rounded-md p-2 flex justify-center items-center mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+      disabled={type === "seller" || !type}
       onClick={() => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
         const existingItem = cart.find((item: any) => item.id === product.id);
