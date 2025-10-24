@@ -1,105 +1,118 @@
-"use server";
+'use server';
 
-import { prisma } from "@repo/db";
-import { sendSMS } from "./send-sms";
+import { prisma } from '@repo/db';
+import { sendSMS } from './send-sms';
 
 function generateOTP() {
-  return Math.floor(100000 + Math.random() * 900000).toString(); // 6 digits
+	return Math.floor(100000 + Math.random() * 900000).toString(); // 6 digits
 }
 
 export async function sendOTP(phoneNumber: string, nidNumber: string) {
-  const user = await prisma.nid.findUnique({ where: { nidNumber } });
-  if (!user)
-    return {
-      data: null,
-      success: false,
-      message: "User not found",
-    };
+	// const user = await prisma.nid.findUnique({ where: { nidNumber } });
+	// if (!user)
+	// 	return {
+	// 		data: null,
+	// 		success: false,
+	// 		message: 'User not found',
+	// 	};
 
-  const userPhoneNumber = user.phoneNumber;
-  if (userPhoneNumber !== phoneNumber)
-    return {
-      data: null,
-      success: false,
-      message: "Phone number does not match",
-    };
+	// const userPhoneNumber = user.phoneNumber;
+	// if (userPhoneNumber !== phoneNumber)
+	// 	return {
+	// 		data: null,
+	// 		success: false,
+	// 		message: 'Phone number does not match',
+	// 	};
 
-  const otp = generateOTP();
-  // const otp = "123456";
+	// const otp = generateOTP();
+	const otp = '123456';
 
-  const message = `Your OTP is ${otp}. Please enter it to verify your phone number.`;
+	// const message = `Your OTP is ${otp}. Please enter it to verify your phone number.`;
 
-  const response = await sendSMS(phoneNumber, message);
-  if (!response.success)
-    return {
-      data: null,
-      success: false,
-      message: "Failed to send OTP",
-    };
+	// const response = await sendSMS(phoneNumber, message);
+	// if (!response.success)
+	//   return {
+	//     data: null,
+	//     success: false,
+	//     message: "Failed to send OTP",
+	//   };
 
-  await prisma.nid.update({
-    where: { nidNumber },
-    data: {
-      otp,
-      otpSentAt: new Date(),
-      otpExpiry: new Date(Date.now() + 10 * 60 * 1000),
-    },
-  });
+	// await prisma.nid.update({
+	// 	where: { nidNumber },
+	// 	data: {
+	// 		otp,
+	// 		otpSentAt: new Date(),
+	// 		otpExpiry: new Date(Date.now() + 10 * 60 * 1000),
+	// 	},
+	// });
 
-  return {
-    data: otp,
-    success: true,
-    message: "OTP sent successfully",
-  };
+	return {
+		data: otp,
+		success: true,
+		message: 'OTP sent successfully',
+	};
 }
 
 export async function verifyOTP(nidNumber: string, otp: string) {
-  const user = await prisma.nid.findUnique({ where: { nidNumber } });
-  if (!user)
-    return {
-      data: null,
-      success: false as const,
-      message: "User not found",
-    };
+	return {
+		data: {
+			first_name: 'Mosheur',
+			last_name: 'Rahman',
+			date_of_birth: new Date(Date.now()).toISOString(),
+			gender: 'Male',
+			address: '240 Malibagh',
+			phone_number: '01783796773',
+			nid_number: '1111111111',
+		},
+		success: true,
+		message: 'OTP Verified',
+	};
+	const user = await prisma.nid.findUnique({ where: { nidNumber } });
+	if (!user)
+		return {
+			data: null,
+			success: false as const,
+			message: 'User not found',
+		};
 
-  if (user.otp !== otp)
-    return {
-      data: null,
-      success: false as const,
-      message: "OTP does not match",
-    };
+	if (user.otp !== otp)
+		return {
+			data: null,
+			success: false as const,
+			message: 'OTP does not match',
+		};
 
-  if (user.otpExpiry && user.otpExpiry < new Date())
-    return {
-      data: null,
-      success: false as const,
-      message: "OTP expired",
-    };
+	if (user.otpExpiry && user.otpExpiry < new Date())
+		return {
+			data: null,
+			success: false as const,
+			message: 'OTP expired',
+		};
 
-  await prisma.nid.update({
-    where: { nidNumber: user.nidNumber },
-    data: {
-      otp: null,
-      otpExpiry: null,
-      otpSentAt: null,
-      otpVerifiedAt: new Date(),
-      otpVerifiedCount: user.otpVerifiedCount + 1,
-    },
-  });
+	await prisma.nid.update({
+		where: { nidNumber: user.nidNumber },
+		data: {
+			otp: null,
+			otpExpiry: null,
+			otpSentAt: null,
+			otpVerifiedAt: new Date(),
+			otpVerifiedCount: user.otpVerifiedCount + 1,
+		},
+	});
 
-  const nidCredentialInfo = {
-    first_name: user.firstName,
-    last_name: user.lastName,
-    date_of_birth: user.dateOfBirth.toISOString(),
-    gender: user.gender,
-    address: user.address,
-    phone_number: user.phoneNumber,
-    nid_number: user.nidNumber,
-  };
+	const nidCredentialInfo = {
+		first_name: user.firstName,
+		last_name: user.lastName,
+		date_of_birth: user.dateOfBirth.toISOString(),
+		gender: user.gender,
+		address: user.address,
+		phone_number: user.phoneNumber,
+		nid_number: user.nidNumber,
+	};
 
-  return {
-    data: nidCredentialInfo,
-    success: true as const,
-    message: "OTP verified successfully",
-  };
+	return {
+		data: nidCredentialInfo,
+		success: true as const,
+		message: 'OTP verified successfully',
+	};
 }

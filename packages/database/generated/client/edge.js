@@ -136,7 +136,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/rahmanwolied/Documents/Thesis/trustless-ecommerce/packages/database/generated/client",
+      "value": "/Users/rahmanwolied/Documents/BRAC/Thesis/SSI Implementation/trustless-ecommerce/packages/database/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -145,14 +145,14 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [
       "prismaSchemaFolder"
     ],
-    "sourceFilePath": "/home/rahmanwolied/Documents/Thesis/trustless-ecommerce/packages/database/prisma/schema/schema.prisma",
+    "sourceFilePath": "/Users/rahmanwolied/Documents/BRAC/Thesis/SSI Implementation/trustless-ecommerce/packages/database/prisma/schema/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
